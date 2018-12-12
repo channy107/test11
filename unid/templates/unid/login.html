@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+      <meta charset="'utf-8">
+    <title>index</title>
+  </head>
+  <body>
+<a href="https://kauth.kakao.com/oauth/authorize?client_id=122f531f95d70dabb69ff17f4f1b0be2&redirect_uri=http://localhost:8000/unid/oauth&response_type=code">
+kakao login
+</a>
+
+{% load socialaccount %}
+<h1>hello world</h1>
+{% if user.is_authenticated %}
+<span>{{ user }}님이 로그인중입니다.</span>
+
+{% for account in user.socialaccount_set.all %}
+
+{% comment %} show avatar from url {% endcomment %}
+<h2 style="text-transform:capitalize;">{{ account.provider }} account data</h2>
+
+<p><img width="50" height="50" src="{{ account.get_avatar_url }}"/></p>
+
+<p>UID: <a href="{{ account.extra_data.link }}">{{ account.uid }}</a></p>
+
+<p>Username: {{ account.extra_data }}</p>
+
+<p>e-mail: {{ account.extra_data.all }}</p>
+
+<p>Dashboard Link:
+<a href="{{ account.extra_data.link }}">{{ account.extra_data.link }}</a></p>
+{% empty %}
+<p>you haven't any social account please</p>
+{% endfor %}
+
+
+{% endif %}
+<h2><a href="/accounts/login">로그인</a></h2>
+<h2><a href="{% provider_login_url 'facebook' method='oauth2' %}">페이스북 로그인</a></h2>
+<h2><a href="{% provider_login_url 'google' method='oauth2' %}">구글 로그인</a></h2>
+<h2><a href="/accounts/logout">로그아웃</a></h2>
+<h2><a href="/accounts/signup">회원가입</a></h2>
+</div>
+  </body>
+
+</html>
