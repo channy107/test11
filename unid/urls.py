@@ -5,5 +5,6 @@ from .views import *
 
 urlpatterns = [
     path('index/', index),
-    path('contentMain/', contentMain),
+    path('contentmain/', contentmain),
+    path('mywallet/', mywallet),
 ]

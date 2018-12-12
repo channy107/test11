@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>(로고) Uni:d</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'unid/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="{% static 'unid/css/shop-homepage.css' %}" rel="stylesheet">
+     <link href="{% static 'unid/css/mywallet.css' %}" rel="stylesheet">
+    <!-- 검색아이콘 -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <!-- 구글 notosan-font -->
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500,700&amp;subset=korean" rel="stylesheet">
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="{% static 'unid/icon/logo-icon.png' %}" border="0" width="100" height="50">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
+                aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="box">
+             <div class="container-1">
+                 <div class="icon-box">
+                    <span class="icon"><i class="fa fa-search"></i></span>
+                 </div>
+                 <div class="text-box">
+                    <input type="search" id="search" placeholder="Search..." />
+                 </div>
+              </div>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">정보공유
+                    </a>
+                </li>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <li class="nav-item">
+                    <a class="nav-link" href="#">컨텐츠거래</a>
+                </li>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <li class="nav-item">
+                    <a class="nav-link" href="#">크라우드펀딩</a>
+                </li>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                        <img src="{% static 'unid/icon/profle-icon.png' %}" border="0" width="32" height="32">
+                    </a>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="http://localhost:8000/unid/login">로그인</a>
+                        <a class="dropdown-item" href="#">회원가입</a>
+                        <a class="dropdown-item" href="#">마이페이지</a>
+                        <a class="dropdown-item" href="#">게시글작성</a>
+                        <a class="dropdown-item" href="/unid/contentsUpload.html">컨텐츠등록</a>
+                    </div>
+            </ul>
+        </div>
+    </div>
+</nav>
+{% block content %}
+
+<!-- Page Content -->
+<div class="container1">
+    <!-- contents InFo -->
+    <div class="rows">
+        <div class="row">
+            <div class="contents-info">
+                <h2 align="left">
+                    <b> 내 지갑</b></h2>
+                        <h4 align="right">
+                            <img src="{% static 'unid/icon/key.png' %}" border="0" width="25" height="25">
+                            <img src="{% static 'unid/icon/line-graph.png' %}" border="0" width="25" height="25"></h4>
+
+
+                <hr size="10" align="center" width=100% noshade="noshade" />
+                <p align="center" size ="5"> gorapapa 님의 보유자산 </p>
+                <p align="center" size ="100"><img src="{% static 'unid/icon/wallet.png' %}" border="0" width="230" height="230">  </p>
+                <h2 align="center" size ="5"> 5200nid </h2>
+                </br>
+                <p align="center" size ="5"> 1200krw </p>
+                <p align="center" size ="5"> 0.003eth </p>
+                <p align="center" size ="5">
+                    <img src="{% static 'unid/icon/credit-card.png' %}" border="0" width="100" height="100">
+                    <img src="{% static 'unid/icon/exchange.png' %}" border="0" width="100" height="100">
+                    <img src="{% static 'unid/icon/bill.png' %}" border="0" width="100" height="100">
+                </p>
+                <p class= icon-name align="center" size ="5"> 전송 &nbsp&nbsp&nbsp  환전  &nbsp&nbsp&nbsp 구매</p>
+            </div>
+        </div>
+
+        </br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br>
+
+
+        <!-- search bar -->
+        <div class="box">
+             <div class="container-2">
+                 <div class="icon-box">
+                    <span class="icon"><i class="fa fa-search"></i></span>
+                 </div>
+                 <div class="text-box">
+                    <input type="search" id="search" placeholder="Search..." />
+                 </div>
+              </div>
+        </div>
+        <!-- history -->
+        <div class="row">
+            <div class="history">
+                <div>
+                    <span>보상내역</span>
+                    <span>6건</span>
+                </div>
+                <div>
+                    <div class="history-total">
+                    <div>
+                        <span>total</span> <span>10.4nid</span>
+                    </div>
+                    <div>
+                        <span>(+3.4)</span>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- history-detail -->
+        <div class="row">
+            <div class="history-detail">
+                2018.11.20   &nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/warning.png' %}" border="0" width="20" height="20">
+                3.4nid
+                <span class="history-name" > 한양대 교양중 제일 재미있는 교양 추천의 보상</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="history-detail">
+                2018.11.20   &nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/warning.png' %}" border="0" width="20" height="20">
+                3.4nid
+                <span class="history-name" > 한양대 교양중 제일 재미있는 교양 추천의 보상</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="history-detail">
+                2018.11.20   &nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/success.png' %}" border="0" width="20" height="20">
+                3.4nid
+                <span class="history-name" > 한양대 교양중 제일 재미있는 교양 추천의 보상</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="history-detail">
+                2018.11.20   &nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/success.png' %}" border="0" width="20" height="20">
+                3.4nid
+                <span class="history-name" > 한양대 교양중 제일 재미있는 교양 추천의 보상</span>
+            </div>
+        </div>
+        </br>
+        </br>
+        <!-- history -->
+        <div class="row">
+            <div class="history">
+                <div>
+                    <span>거래내역</span>
+                    <span>6건</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- history-detail -->
+        <div class="row">
+            <div class="history-detail">
+                2018.11.20 &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/user.png' %}" border="0" width="18" height="18">
+                <span> gorapapa </span> &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/user.png' %}" border="0" width="18" height="18">
+                <span> kingsori </span> &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/dollar.png' %}" border="0" width="18" height="18">
+                <span> 32nid </span>
+                <span class="history-name" > 0x3i4kl4hi3oief56i4h4oi</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="history-detail">
+                2018.11.20 &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/user.png' %}" border="0" width="18" height="18">
+                <span> gorapapa </span> &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/user.png' %}" border="0" width="18" height="18">
+                <span> kingsori </span> &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/dollar.png' %}" border="0" width="18" height="18">
+                <span> 32nid </span>
+                <span class="history-name" > 0x3i4kl4hi3oief56i4h4oi</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="history-detail">
+                2018.11.20 &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/user.png' %}" border="0" width="18" height="18">
+                <span> gorapapa </span> &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/user.png' %}" border="0" width="18" height="18">
+                <span> kingsori </span> &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/dollar.png' %}" border="0" width="18" height="18">
+                <span> 32nid </span>
+                <span class="history-name" > 0x3i4kl4hi3oief56i4h4oi</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="history-detail">
+                2018.11.20 &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/user.png' %}" border="0" width="18" height="18">
+                <span> gorapapa </span> &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/user.png' %}" border="0" width="18" height="18">
+                <span> kingsori </span> &nbsp&nbsp&nbsp&nbsp
+                <img src="{% static 'unid/icon/dollar.png' %}" border="0" width="18" height="18">
+                <span> 32nid </span>
+                <span class="history-name" > 0x3i4kl4hi3oief56i4h4oi</span>
+            </div>
+        </div>
+
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+</body>
+
+</html>

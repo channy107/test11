@@ -6,5 +6,8 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'unid/index.html', {})
 
-def contentMain(request):
-    return render(request, 'unid/contentMain.html', {})
+def contentmain(request):
+    return render(request, 'unid/contentmain.html', {})
+
+def mywallet(request):
+    return render(request, 'unid/mywallet.html', {})
