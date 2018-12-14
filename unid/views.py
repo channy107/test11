@@ -44,4 +44,10 @@ def main(request):
     return render(request, 'unid/main.html', {})
 
 def login(request):
-    return render(request, 'unid/login.html', {})
+    return render(request, 'unid/login_yong.html', {})
+
+def signup(request):
+    return render(request, 'unid/signup.html', {})
+
+def createaccount(request):
+    return render(request, 'unid/createaccount.html', {})
