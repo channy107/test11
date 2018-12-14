@@ -16,4 +16,5 @@ urlpatterns = [
     path('contentstran/', contentstran, name='contentstran'),
     path('oauth', views.oauth, name='oauth'),
     path('login/', views.login, name='login'),
+    path('transaction/', transaction),
 ]

@@ -8,6 +8,9 @@ from unid.models import myPage
 def mywallet(request):
     return render(request, 'unid/mywallet.html', {})
 
+def transaction(request):
+    return render(request, 'unid/transaction.html', {})
+
 def oauth(request):
     code = request.GET.get('code')
     url = "https://kauth.kakao.com/oauth/token"
