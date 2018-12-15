@@ -1,47 +1,49 @@
 <!DOCTYPE html>
 
-<html>
-  <head>
-      <meta charset="'utf-8">
-    <title>index</title>
-  </head>
-  <body>
-<a href="https://kauth.kakao.com/oauth/authorize?client_id=122f531f95d70dabb69ff17f4f1b0be2&redirect_uri=http://localhost:8000/unid/oauth&response_type=code">
-kakao login
-</a>
+<html lang="en">
 
-{% load socialaccount %}
-<h1>hello world</h1>
-{% if user.is_authenticated %}
-<span>{{ user }}님이 로그인중입니다.</span>
+{% extends 'unid/mywallet.html' %}
+{% load static %}
+{% block content %}
 
-{% for account in user.socialaccount_set.all %}
+<head>
 
-{% comment %} show avatar from url {% endcomment %}
-<h2 style="text-transform:capitalize;">{{ account.provider }} account data</h2>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-<p><img width="50" height="50" src="{{ account.get_avatar_url }}"/></p>
+    <title>(로고) sign up</title>
 
-<p>UID: <a href="{{ account.extra_data.link }}">{{ account.uid }}</a></p>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'unid/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
-<p>Username: {{ account.extra_data }}</p>
+    <!-- Custom styles for this template -->
+    <link href="{% static 'unid/css/shop-homepage.css' %}" rel="stylesheet">
+    <link href="{% static 'unid/css/signup.css' %}" rel="stylesheet">
+    <!-- 검색아이콘 -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
 
-<p>e-mail: {{ account.extra_data.all }}</p>
+</head>
 
-<p>Dashboard Link:
-<a href="{{ account.extra_data.link }}">{{ account.extra_data.link }}</a></p>
-{% empty %}
-<p>you haven't any social account please</p>
-{% endfor %}
-
-
-{% endif %}
-<h2><a href="/accounts/login">로그인</a></h2>
-<h2><a href="{% provider_login_url 'facebook' method='oauth2' %}">페이스북 로그인</a></h2>
-<h2><a href="{% provider_login_url 'google' method='oauth2' %}">구글 로그인</a></h2>
-<h2><a href="/accounts/logout">로그아웃</a></h2>
-<h2><a href="/accounts/signup">회원가입</a></h2>
-</div>
-  </body>
-
+<body>
+    <div id="outline">
+        <div id="container">
+            <div id="contents">
+                <div id="logo">
+                    <p><img style="width:210px" src="{% static 'unid/icon/unid_icon.png' %}"></p>
+                    <p><h1 style="text-align:center"><strong>로그인</strong></h1></p>
+                    <p>기존에 사용하시던 계정으로</p>
+                    <p>간편하게 로그인하세요!</p>
+                </div>
+                <div id="signUpLinks">
+                    <p><a href="https://kauth.kakao.com/oauth/authorize?client_id=122f531f95d70dabb69ff17f4f1b0be2&redirect_uri=http://localhost:8000/unid/oauth&response_type=code" target="_blank"><img style="width:350px" src="{% static 'unid/icon/google.png' %}" ></a></p>
+                    <p><a href="http://www.naver.com" target="_blank"><img style="width:350px" src="{% static 'unid/icon/facebook.png' %}"></a></p>
+                    <p><a href="https://kauth.kakao.com/oauth/authorize?client_id=122f531f95d70dabb69ff17f4f1b0be2&redirect_uri=http://localhost:8000/unid/oauth&response_type=code" target="_blank"><img style="width:350px" src="{% static 'unid/icon/kakao.png' %}"></a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
+{% endblock %}

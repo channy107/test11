@@ -12,14 +12,18 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
+    <script src="{% static 'unid/vendor/jquery/jquery.js' %}"></script>
+    <script src="{% static 'unid/vendor/bootstrap/css/bootstrap.css' %}"></script>
+    <script src="https://cdn.rawgit.com/ethereum/web3.js/develop/dist/web3.js"></script>
+
+    <script src="{% static 'unid/vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'unid/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <link href="{% static 'unid/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <title>uni:d</title>
 
     <!--favicon -->
     <link rel="shortcut icon" href="{% static 'unid/icon/unid_favicon.ico' %}">
     <!-- Bootstrap core CSS -->
-    <link href="{% static 'unid/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link href="{% static 'unid/vendor/bootstrap/js/bootstrap.bundle.min.js' %}" rel="stylesheet">
-    <link href="{% static 'unid/vendor/jquery/jquery.min.js' %}" rel="stylesheet">
 
     <!-- Custom styles for this template -->
     <link href="{% static 'unid/css/shop-homepage.css' %}" rel="stylesheet">
@@ -41,7 +45,7 @@
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="http://localhost:8000/unid">
             <img src="{% static 'unid/icon/unid_icon.png' %}" border="0" width="113" height="54">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
@@ -79,7 +83,7 @@
                     </a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="http://localhost:8000/unid/login">로그인</a>
-                        <a class="dropdown-item" href="#">회원가입</a>
+                        <a class="dropdown-item" href="http://localhost:8000/unid/signup">회원가입</a>
                         <a class="dropdown-item" href="#">마이페이지</a>
                         <a class="dropdown-item" href="#">게시글작성</a>
                         <a class="dropdown-item" href="/unid/contentsUpload.html">컨텐츠등록</a>
@@ -109,6 +113,9 @@
                 </br>
                 <hr size="10" align="center" width=100% noshade="noshade" color="#efefef"  />
                     <div id="Status_account">
+                    {% if request.session.user_name %}
+                    <p align="center" size ="5"> {{ request.session.user_name }} 님의 보유자산 </p>
+                    {% endif %}
                     </div>
                 <p align="center" size ="100"><img src="{% static 'unid/icon/wallet.png' %}" border="0" width="230" height="230">  </p>
                     <div id="Status_balance">
@@ -336,17 +343,17 @@
            // 계정별 잔액을 출력
            function showStatus() {
 
-               let statusAccount = `
-                    <p id="ac" align="center" size ="5"></p>
-               `;
+               <!--let statusAccount = `-->
+                    <!--<p id="ac" align="center" size ="5"></p>-->
+               <!--`;-->
 
                let statusBalance =`
                    <h4 align="center" size ="5"> nid </h4>
                    <h4 id="ba" align="center" size ="5"></h4>
                 `;
 
-               $('#Status_account').empty();
-               $('#Status_account').append(statusAccount);
+               <!--$('#Status_account').empty();-->
+               <!--$('#Status_account').append(statusAccount);-->
 
                $('#Status_balance').empty();
                $('#Status_balance').append(statusBalance);
@@ -356,7 +363,7 @@
                let account = accounts[0];
                let balance = parseFloat(web3.fromWei(web3.eth.getBalance(account), "ether"));
                totalAmount += balance;
-               $("#ac").append(`${account}의 보유자산`);
+               <!--$("#ac").append(`${account}의 보유자산`);-->
                $('#ba').append(`${balance}eth`);
 
 

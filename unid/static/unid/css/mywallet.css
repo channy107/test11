@@ -310,6 +310,7 @@
         .function-button{
             float: left;
             align-contents: center;
+            text-align: center;
             width: 33%;
             padding:10px;
         }
