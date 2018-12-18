@@ -2,7 +2,7 @@
 
 <html lang="en">
 
-{% extends 'unid/mywallet.html' %}
+{% extends 'unid/navigationbar.html' %}
 {% load static %}
 {% block content %}
 
@@ -35,6 +35,9 @@
         <div id="description">
             <p style="text-align: center;"><strong>전자지갑 생성을 위해 비밀번호를 입력해주세요</strong></p>
         </div>
+        {% load socialaccount %}
+        {% if user.is_authenticated %}
+        {% for account in user.socialaccount_set.all %}
         <div id="text">
             <form class="form-horizontal" name=writeform method="post" enctype="multipart/form-data"
       xmlns="http://www.w3.org/1999/html">
@@ -43,13 +46,13 @@
                     <label for="email">이메일주소</label>
                 </p>
                 <p>
-                    <input type="email" class="form-control" name=email value={{ id }} readonly/>
+                    <input type="email" class="form-control" name=email value={{ account.extra_data.email }} readonly/>
                 </p>
                 <p>
                     <label for="name">이름</label>
                 </p>
                 <p>
-                    <input type="text" class="form-control" name=name value={{ nickname }} readonly/>
+                    <input type="text" class="form-control" name=name value={{ account.extra_data.name }} readonly/>
                 </p>
                 <p>
                     <label for="pwd">비밀번호</label>
@@ -59,7 +62,13 @@
                 </p>
                 <button type="button" class="btn btn-default" Onclick="writeCheck()">Submit</button>
             </form>
+
         </div>
+        {% empty %}
+        <p>you haven't any social account please</p>
+        {% endfor %}
+
+        {% endif %}
     </div>
 </body>
 <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>

@@ -1,3 +1,6 @@
+from _sha256 import sha256
+
+from allauth.socialaccount.templatetags import socialaccount
 from web3 import Web3, HTTPProvider
 from django.shortcuts import render
 import requests
@@ -32,6 +35,42 @@ def signup(request):
 
 def createaccount(request):
     return render(request, 'unid/createaccount.html', {})
+#     if request.method == 'GET':
+#         # email = json.loads(((response.text).encode('utf-8')))['email']
+#         email = socialaccount.extra_data.email
+#
+#         try:
+#              member = myPageInFomation.extra_data.objects.get(email=id)
+#              request.session['user_id'] = member.email
+#              request.session['user_name'] = member.name
+#              request.session['user_account'] = member.account
+#         except myPageInFomation.DoesNotExist:
+#             return render(
+#                 request,
+#                 'unid/createaccount.html',
+#                 {'id': id, 'nickname': nickname}
+#             )
+#         else:
+#             # return HttpResponse(member)
+#             url = 'http://localhost:8000/unid/mywallet'
+#             return HttpResponseRedirect(url)
+#
+#     else:
+#         time = timezone.now()
+#         rpc_url = "http://localhost:8545"
+#         w3 = Web3(HTTPProvider(rpc_url))
+#         account = w3.personal.newAccount('pwd')
+#         pwd = request.POST['pwd'].encode('utf-8')  # ★★★★
+#         lockpwd = sha256(pwd)
+#         br = myPageInFomation(email=request.POST['email'],
+#                               name=request.POST['name'],
+#                               joiningdate=timezone.now(),
+#                               pwd=lockpwd,  # ★★★★
+#                               account=account)
+#         br.save()
+#         url = 'http://localhost:8000/unid'
+#         return HttpResponseRedirect(url)
+#     return render(request, 'unid/createaccount.html', {})
 
 def oauth(request):
     if request.method == 'GET':
@@ -77,12 +116,16 @@ def oauth(request):
         rpc_url = "http://localhost:8545"
         w3 = Web3(HTTPProvider(rpc_url))
         account = w3.personal.newAccount('pwd')
+        pwd = request.POST['pwd'].encode('utf-8')  # ★★★★
+        lockpwd = sha256(pwd)
         br = myPageInFomation(email=request.POST['email'],
                               name=request.POST['name'],
                               joiningdate=timezone.now(),
-                              pwd=request.POST['pwd'],
+                              pwd=lockpwd,  # ★★★★
                               account=account)
-
         br.save()
         url = 'http://localhost:8000/unid'
         return HttpResponseRedirect(url)
+
+def contentsupload(request):
+    return render(request, 'unid/contentsupload.html', {})
