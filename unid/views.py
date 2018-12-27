@@ -129,3 +129,6 @@ def oauth(request):
 
 def contentsupload(request):
     return render(request, 'unid/contentsupload.html', {})
+
+def mypage(request):
+    return render(request, 'unid/mypage.html', {})
