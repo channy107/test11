@@ -153,8 +153,8 @@ def contentsupload(request):
             with open(contents_dir + file_name, 'wb') as file:  # 저장경로
                 for chunk in upload_file.chunks():
                     file.write(chunk)
-        
-        
+
+
         # 검수시스템 추후 개발예정
 
 
@@ -169,7 +169,7 @@ def contentsupload(request):
             ftp.cwd("/home/unid/contents/" + today)
         ftp.cwd("/home/unid/contents/" + today)
         os.chdir("uploadfiles/" + today)
-        # contents_dir = today + "/"    
+        # contents_dir = today + "/"
         # # with open(contents_dir + file_name, "wb") as file:
         # #     ftp.storlines('STOR %s' % file_name, file)
         for upload_file in upload_files:
@@ -178,7 +178,7 @@ def contentsupload(request):
             # uploadfile = open("uploadfiles/" + today + "/" + file_name, "rb")
             ftp.storbinary('STOR ' + file_name, uploadfile)
             uploadfile.close()
-        
+
         br = uploadContents(
                         contentspath=contents_dir,
                         filename=file_name,

@@ -10,7 +10,7 @@ from .views import *
 
 
 urlpatterns = [
-    path('mywallet/', mywallet),
+    path('mywallet/', mywallet,),
     path('', main, name='main'),
     path('contentsdetail/', contentsdetail, name='contentsdetail'),
     path('contentstran/', contentstran, name='contentstran'),
@@ -21,4 +21,5 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('createaccount/', views.createaccount, name='createaccount'),
     path('contentsupload/', views.contentsupload, name='contentsupload'),
+    path('mypage/', views.mypage, name='mypage'),
 ]
