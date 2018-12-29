@@ -1,6 +1,10 @@
 
         // Class
         // Usage as a mixin
+        .body {
+            font-family: 'Noto Sans KR', sans-serif;
+
+            }
         .element {
             .center-block();
         }
@@ -60,9 +64,6 @@
             margin: 0 auto;
             margin:30px auto 20px auto;
         }
-
-
-
         .rows {
             width: 1150px;
             /* height: 1600px; */
@@ -148,8 +149,11 @@
             text-align: center;
         }
         .nav-item{
-            font-size: 1.3rem;
+            font-size: 1rem;
             font-weight:600;
+        }
+        .nav-link{
+            font-family: 'Noto Sans KR', sans-serif;
         }
         .input-reply{
             width: 1000px;

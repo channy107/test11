@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.kakao',
     'allauth.socialaccount.providers.naver',
     'allauth.socialaccount.providers.facebook',
+    
 ]
 
 MIDDLEWARE = [
@@ -128,12 +129,12 @@ AUTHENTICATION_BACKENDS = (
 
 )
 # -----------oauth------------------------------------------
-SITE_ID = 5  # 안맞으면 site maching the query ... 이거 대체 뭘까
+SITE_ID = 7  # 안맞으면 site maching the query ... 이거 대체 뭘까
 
-LOGIN_REDIRECT_URL = '/unid/createaccount'
+LOGIN_REDIRECT_URL = '/unid'
 ACCOUNT_LOGOUT_REDIRECT_URL = "/unid"
 ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS = True
-
+# ACCOUNT_AUTHENTICATION_METHOD = 'email'
 WSGI_APPLICATION = 'unidweb.wsgi.application'
 
 
@@ -142,21 +143,21 @@ WSGI_APPLICATION = 'unidweb.wsgi.application'
 
 DATABASES = {
    'default': {
-       'ENGINE': 'django.db.backends.sqlite3',
-       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+   #     'ENGINE': 'django.db.backends.sqlite3',
+   #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 
 
-       # 'ENGINE': 'django.db.backends.mysql',
-       # 'OPTIONS': {
-       #     'read_default_file': './db/cnf',
-       #     'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-       #     'charset': 'utf8'
-       #     },
-       # 'NAME': 'unid',  #mysql
-       # 'USER': 'unid', #root
-       # 'PASSWORD': 'roottoor', #1234
-       # 'HOST': 'uniddb.c9k3lo3tbdxu.ap-northeast-2.rds.amazonaws.com', #공백으로 냅두면 default localhost
-       # 'PORT': '3306' #공백으로 냅두면 default 3306
+       'ENGINE': 'django.db.backends.mysql',
+       'OPTIONS': {
+           'read_default_file': './db/cnf',
+           'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+           # 'charset': 'utf8'
+           },
+       'NAME': 'unid_db',  #mysql
+       'USER': 'jun', #root
+       'PASSWORD': 'jun', #1234
+       'HOST': '210.107.78.157', #공백으로 냅두면 default localhost
+       'PORT': '3306' #공백으로 냅두면 default 3306
    }
 }
 
@@ -198,3 +199,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# MEDIA_URL = 'DB서버' # MEDIA 파일이 접근하는 URL이 저거로 시작
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'uploadfiles')  # 실제 파일이 위치하는 서버상 경로
+
+# FILE_UPLOAD_HANDLERS =  [
+#     "django.core.files.uploadhandler.MemoryFileUploadHandler" ,
+#     "django.core.files.uploadhandler.TemporaryFileUploadHandler",
+# ]

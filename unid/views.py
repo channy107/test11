@@ -1,6 +1,13 @@
+import os
 from _sha256 import sha256
-
-from allauth.socialaccount.templatetags import socialaccount
+from datetime import datetime
+from django.contrib.sessions.models import Session
+import allauth.socialaccount.providers.google
+from ftplib import FTP
+from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
+from django.contrib.auth.models import User
+from django.utils.datastructures import MultiValueDictKeyError
+from django.utils.datastructures import MultiValueDictKeyError
 from web3 import Web3, HTTPProvider
 from django.shortcuts import render
 import requests
@@ -10,7 +17,11 @@ from django.utils import timezone
 # from unid.models import myPage
 from unid.models import myPageInFomation
 from web3.auto import w3
+from unid.models import uploadContents
 
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+from allauth.socialaccount.models import SocialAccount
 
 def mywallet(request):
     return render(request, 'unid/mywallet.html', {})
@@ -34,43 +45,24 @@ def signup(request):
     return render(request, 'unid/signup.html', {})
 
 def createaccount(request):
-    return render(request, 'unid/createaccount.html', {})
-#     if request.method == 'GET':
-#         # email = json.loads(((response.text).encode('utf-8')))['email']
-#         email = socialaccount.extra_data.email
-#
-#         try:
-#              member = myPageInFomation.extra_data.objects.get(email=id)
-#              request.session['user_id'] = member.email
-#              request.session['user_name'] = member.name
-#              request.session['user_account'] = member.account
-#         except myPageInFomation.DoesNotExist:
-#             return render(
-#                 request,
-#                 'unid/createaccount.html',
-#                 {'id': id, 'nickname': nickname}
-#             )
-#         else:
-#             # return HttpResponse(member)
-#             url = 'http://localhost:8000/unid/mywallet'
-#             return HttpResponseRedirect(url)
-#
-#     else:
-#         time = timezone.now()
-#         rpc_url = "http://localhost:8545"
-#         w3 = Web3(HTTPProvider(rpc_url))
-#         account = w3.personal.newAccount('pwd')
-#         pwd = request.POST['pwd'].encode('utf-8')  # ★★★★
-#         lockpwd = sha256(pwd)
-#         br = myPageInFomation(email=request.POST['email'],
-#                               name=request.POST['name'],
-#                               joiningdate=timezone.now(),
-#                               pwd=lockpwd,  # ★★★★
-#                               account=account)
-#         br.save()
-#         url = 'http://localhost:8000/unid'
-#         return HttpResponseRedirect(url)
-#     return render(request, 'unid/createaccount.html', {})
+    if request.method == 'GET':
+        return render(request, 'unid/createaccount.html', {})
+    else:
+        rpc_url = "http://localhost:8545"
+        w3 = Web3(HTTPProvider(rpc_url))
+
+        pwd = request.POST['pwd']
+        account = w3.personal.newAccount(pwd)
+        br = myPageInFomation(email=request.POST['email'],
+                              name=request.POST['name'],
+                              joiningdate=timezone.now(),
+                              # pwd=request.POST['pwd'],
+                              account=account
+                              )
+        br.save()
+        url = 'http://localhost:8000/unid'
+        return HttpResponseRedirect(url)
+
 
 def oauth(request):
     if request.method == 'GET':
@@ -97,9 +89,6 @@ def oauth(request):
         nickname = json.loads(((response.text).encode('utf-8')))['properties']['nickname']
         try:
              member = myPageInFomation.objects.get(email=id)
-             request.session['user_id'] = member.email
-             request.session['user_name'] = member.name
-             request.session['user_account'] = member.account
         except myPageInFomation.DoesNotExist:
             return render(
                 request,
@@ -107,7 +96,15 @@ def oauth(request):
                 {'id': id, 'nickname': nickname}
             )
         else:
+            # k = member.account
+            # k = 0xe8218321c65272Bb32A12dE69C834020dEA55ee2
+            request.session['user_email'] = member.email
+            request.session['user_name'] = member.name
+            # request.session['user_account'] = k[2:]
+            request.session['user_account'] = '' + member.account
+            # request.session['user_account1'] = k
             # return HttpResponse(member)
+
             url = 'http://localhost:8000/unid/mywallet'
             return HttpResponseRedirect(url)
 
@@ -115,17 +112,92 @@ def oauth(request):
         time = timezone.now()
         rpc_url = "http://localhost:8545"
         w3 = Web3(HTTPProvider(rpc_url))
-        account = w3.personal.newAccount('pwd')
-        pwd = request.POST['pwd'].encode('utf-8')  # ★★★★
-        lockpwd = sha256(pwd)
+
+        password = request.POST['pwd']  # ★★★★
+        account = w3.personal.newAccount(password)
+        # lockpwd = sha256(password)
         br = myPageInFomation(email=request.POST['email'],
                               name=request.POST['name'],
                               joiningdate=timezone.now(),
-                              pwd=lockpwd,  # ★★★★
+                            #   pwd=lockpwd,  # ★★★★
                               account=account)
         br.save()
         url = 'http://localhost:8000/unid'
         return HttpResponseRedirect(url)
 
+
 def contentsupload(request):
-    return render(request, 'unid/contentsupload.html', {})
+    if request.method == 'GET':
+        return render(request, 'unid/contentsupload.html', {})
+    else:  # submit으로 제출
+        try:
+            upload_files = request.FILES.getlist('user_files')  # submit에 첨부됨 파일
+        except MultiValueDictKeyError:
+            pass
+        try:
+            now = datetime.now()
+            today = now.strftime('%Y-%m-%d')
+            os.mkdir("uploadfiles/" + today) #그 날짜에 맞는 디렉토리 생성
+            # root_dir = "우리 서버"   # ★★★★★★★★★★★
+            # contents_dir = root_dir + "/" + today + "/"
+            # contents_dir = today + "/"
+        except FileExistsError as e:
+            pass
+
+        for upload_file in upload_files:  # 다중 파일 업로드
+            file_name = upload_file.name
+            now = datetime.now()
+            today = now.strftime('%Y-%m-%d')
+            contents_dir = "uploadfiles/" + today + "/"
+                      #해당 날짜의 디렉토리
+            with open(contents_dir + file_name, 'wb') as file:  # 저장경로
+                for chunk in upload_file.chunks():
+                    file.write(chunk)
+        
+        
+        # 검수시스템 추후 개발예정
+
+
+
+        ftp = FTP()
+        ftp.connect("210.107.78.157")    #Ftp 주소 Connect(주소 , 포트)
+        ftp.login("unid", "dkagh")
+        ftp.cwd("/home/unid/contents")
+        try:
+            ftp.mkd(today)
+        except:
+            ftp.cwd("/home/unid/contents/" + today)
+        ftp.cwd("/home/unid/contents/" + today)
+        os.chdir("uploadfiles/" + today)
+        # contents_dir = today + "/"    
+        # # with open(contents_dir + file_name, "wb") as file:
+        # #     ftp.storlines('STOR %s' % file_name, file)
+        for upload_file in upload_files:
+            file_name = upload_file.name
+            uploadfile = open(file_name, "rb")
+            # uploadfile = open("uploadfiles/" + today + "/" + file_name, "rb")
+            ftp.storbinary('STOR ' + file_name, uploadfile)
+            uploadfile.close()
+        
+        br = uploadContents(
+                        contentspath=contents_dir,
+                        filename=file_name,
+                        title=request.POST['title'],
+                        publisheddate=request.POST['publisheddate'],
+                        category=request.POST['category'],
+                        price=request.POST['price'],
+                        tags=request.POST['tags'],
+                        fileinfo=request.POST['fileinfo'],
+                        totalpages=request.POST['totalpages'],
+                        # previewpath=request.POST['previewpath'],
+                        authorinfo=request.POST['authorinfo'],
+                        intro=request.POST['intro'],
+                        index=request.POST['index'],
+                        contents=request.POST['contents'],  # 소개글 제한?
+                        reference=request.POST['reference'],
+                        # hash=request.POST['hash'],
+                    )
+        br.save()
+
+        url = '/unid/contentstran/'
+        return HttpResponseRedirect(url)

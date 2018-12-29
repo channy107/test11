@@ -28,6 +28,8 @@
 </head>
 
 <body>
+
+{% load socialaccount %}
     <div id="outline">
         <div id="container">
             <div id="contents">
@@ -38,13 +40,15 @@
                     <p>간편하게 회원가입하세요!</p>
                 </div>
                 <div id="signUpLinks">
-                    <p><a href="https://kauth.kakao.com/oauth/authorize?client_id=122f531f95d70dabb69ff17f4f1b0be2&redirect_uri=http://localhost:8000/unid/oauth&response_type=code"><img style="width:350px" src="{% static 'unid/icon/google.png' %}" ></a></p>
-                    <p><a href="http://www.naver.com" target="_blank"><img style="width:350px" src="{% static 'unid/icon/facebook.png' %}"></a></p>
+                    <p><a href="{% provider_login_url 'google' method='oauth2' %}"><img style="width:350px" src="{% static 'unid/icon/google.png' %}" ></a></p>
+                    <p><a href="{% provider_login_url 'facebook' method='oauth2' %}"><img style="width:350px" src="{% static 'unid/icon/facebook.png' %}"></a></p>
                     <p><a href="https://kauth.kakao.com/oauth/authorize?client_id=122f531f95d70dabb69ff17f4f1b0be2&redirect_uri=http://localhost:8000/unid/oauth&response_type=code"><img style="width:350px" src="{% static 'unid/icon/kakao.png' %}"></a></p>
                 </div>
             </div>
         </div>
     </div>
+
+    
 </body>
 </html>
 {% endblock %}
