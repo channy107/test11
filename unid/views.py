@@ -15,7 +15,7 @@ import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 # from unid.models import myPage
-from .models import myPageInFomation
+from .models import myPageInfomation
 from web3.auto import w3
 from .models import uploadContents
 
@@ -24,7 +24,7 @@ from django.shortcuts import render
 from allauth.socialaccount.models import SocialAccount
 
 def mypage(request):
-    # mypage = MypageInFomation.objects.get(email)
+    # mypage = MypageInfomation.objects.get(email)
     contentsboard = uploadContents.objects.all()
     context = {'mypage':mypage,
                'contentsboard':contentsboard}
@@ -65,7 +65,7 @@ def createaccount(request):
 
         pwd = request.POST['pwd']
         account = w3.personal.newAccount(pwd)
-        br = myPageInFomation(email=request.POST['email'],
+        br = myPageInfomation(email=request.POST['email'],
                               name=request.POST['name'],
                               joiningdate=timezone.now(),
                               # pwd=request.POST['pwd'],
@@ -100,8 +100,8 @@ def oauth(request):
         id = json.loads(((response.text).encode('utf-8')))['id']
         nickname = json.loads(((response.text).encode('utf-8')))['properties']['nickname']
         try:
-             member = myPageInFomation.objects.get(email=id)
-        except myPageInFomation.DoesNotExist:
+             member = myPageInfomation.objects.get(email=id)
+        except myPageInfomation.DoesNotExist:
             return render(
                 request,
                 'unid/createaccount.html',
@@ -128,7 +128,7 @@ def oauth(request):
         password = request.POST['pwd']  # ★★★★
         account = w3.personal.newAccount(password)
         # lockpwd = sha256(password)
-        br = myPageInFomation(email=request.POST['email'],
+        br = myPageInfomation(email=request.POST['email'],
                               name=request.POST['name'],
                               joiningdate=timezone.now(),
                             #   pwd=lockpwd,  # ★★★★
