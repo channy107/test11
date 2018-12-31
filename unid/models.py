@@ -17,7 +17,7 @@ class myPageInFomation(models.Model):
 
 
 class uploadContents(models.Model):
-    IDX = models.IntegerField(primary_key=True, null=False)
+    contents_id = models.AutoField(primary_key=True, default=1)
     writeremail = models.CharField(max_length=50)  # 기본키 설정??
     filename = models.CharField(max_length=100)
     contentspath = models.CharField(max_length=200)
