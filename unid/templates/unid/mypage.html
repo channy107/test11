@@ -9,17 +9,19 @@
 <head>
     <link href="{% static 'unid/css/mypage.css' %}" rel="stylesheet">
     <link href="{% static 'unid/css/mywallet.css' %}" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Noto+Sans+KR:300,400,500,700&amp;subset=korean" rel="stylesheet">
 </head>
 <body>
 <div id="myinfo">
+
     <div id="profile-icon">
         <p style="text-align: center; margin-bottom:0px;"><img style="width:60px; margin-top:40px;" src="{% static 'unid/icon/user.png' %}"></p>
     </div>
     <div id="id">
-        <p style="text-align: center; font-size: xx-large; font-weight:600; ">gorapapa</p>
+        <p style="text-align: center; font-size: xx-large; font-weight:600; ">gorappaduk</p>
     </div>
     <div id="profile">
-        <p style="text-align: center;">고라파덕을 사랑하는 고라파파</p>
+        <p style="text-align: center;">안녕하세요</p>
     </div>
     <div id="user-info">
         <div id="follower">
@@ -34,13 +36,14 @@
     </div>
     <div id="user-info2">
         <div id="joining-date">
-            <p style="text-align: center; display:inline;"><img style="width:20px;" src="{% static 'unid/icon/joining-date.png' %}">2018.10.22 가입</p>
+            <p style="text-align: center; display:inline;"><img style="width:20px;" src="{% static 'unid/icon/joining-date.png' %}"> 2018-12-28가입</p>
         </div>
         <div id="authentication-info">
             <p style="text-align: center; display:inline;"><img style="width:20px;" src="{% static 'unid/icon/square-academy-cap.png' %}">미인증</p>
         </div>
     </div>
 </div>
+
 <div id="container">
     <div id="contents-list">
         <div id="history">
@@ -68,11 +71,12 @@
     <div id="uploads">
         <p style="text-align: left; font-size:larger; color:#9aa1a7;"><strong>내가 올린 콘텐츠</strong></p>
         <br>
+        {% for contents in contentsboard %}
         <div class="user">
             <img src="/static/unid/icon/profle-icon.png" border="0" width="35" height="35">&nbsp
-            <span class="writer">작성자</span>
-            <span class="writing-time">3일전</span>
-            <span class="contents-kind">#학교정보</span>
+            <span class="writer">{{contents.writeremail}}</span>
+            <span class="writing-time">{{contents.publisheddate}}</span>
+            <span class="content-kind">{{contents.category}}</span>
         </div>
         <div class="row">
             <div class="main-col-md-3">
@@ -83,19 +87,15 @@
             <div class="col-md-5">
 
                 <div class="detail-content">
-                    <h3>한양대 교양추천</h3>
+                    <h3>{{contents.title}}</h3>
                     <p>
-                        교양장인인 제가 생각했을때 가장 추천할만한 교양을 꼽자면 당연히 그거 죠
-                        그 교양 그 이름이 무엇이냐.....
-                        유쾌한 이노베이션 정효찬 교수님
-                        교양으로 듣는 논어와 맹자
-                        인간과 음악적 상상력 정경성 교수님
-                        혁신과 잡종의 과학사 남영 교수님 이네요..
+                        {{contents.contents}}
                     </p>
                 </div>
             </div>
         </div>
     </div>
+    {% endfor %}
     <br>
     <div id="downloads">
         <p style="text-align: left; font-size:larger; color:#9aa1a7;"><strong>내가 받은 콘텐츠</strong></p>
@@ -104,7 +104,7 @@
             <img src="/static/unid/icon/profle-icon.png" border="0" width="35" height="35">&nbsp
             <span class="writer">작성자</span>
             <span class="writing-time">3일전</span>
-            <span class="contents-kind">#학교정보</span>
+            <span class="content-kind">자소서</span>
         </div>
         <div class="row">
             <div class="main-col-md-3">

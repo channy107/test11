@@ -15,13 +15,25 @@ import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 # from unid.models import myPage
-from unid.models import myPageInFomation
+from .models import myPageInFomation
 from web3.auto import w3
-from unid.models import uploadContents
+from .models import uploadContents
 
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from allauth.socialaccount.models import SocialAccount
+
+def mypage(request):
+    # mypage = MypageInFomation.objects.get(email)
+    contentsboard = uploadContents.objects.all()
+    context = {'mypage':mypage,
+               'contentsboard':contentsboard}
+    return render(request, 'unid/mypage.html', context)
+
+def contentsboard(request):
+    contentsboard = uploadContents.objects.all()
+    context = {'contentsboard':contentsboard}
+    return render(request, 'unid/contentsboard.html', context)
 
 def mywallet(request):
     return render(request, 'unid/mywallet.html', {})

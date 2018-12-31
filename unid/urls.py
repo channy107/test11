@@ -22,4 +22,5 @@ urlpatterns = [
     path('createaccount/', views.createaccount, name='createaccount'),
     path('contentsupload/', views.contentsupload, name='contentsupload'),
     path('mypage/', views.mypage, name='mypage'),
+    path('contentsboard/', contentsboard,   name='contentsboard'),
 ]
