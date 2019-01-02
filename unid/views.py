@@ -15,13 +15,14 @@ import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 # from unid.models import myPage
-from .models import myPageInfomation
+from unid.models import myPageInfomation, contentsInfo
 from web3.auto import w3
-from .models import uploadContents
-
+from unid.models import uploadContents
+import random
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from allauth.socialaccount.models import SocialAccount
+import hashlib
 
 def mypage(request):
     # mypage = MypageInfomation.objects.get(email)
@@ -68,7 +69,7 @@ def createaccount(request):
         br = myPageInfomation(email=request.POST['email'],
                               name=request.POST['name'],
                               joiningdate=timezone.now(),
-                              # pwd=request.POST['pwd'],
+                              pwd=request.POST['pwd'],
                               account=account
                               )
         br.save()
@@ -108,14 +109,9 @@ def oauth(request):
                 {'id': id, 'nickname': nickname}
             )
         else:
-            # k = member.account
-            # k = 0xe8218321c65272Bb32A12dE69C834020dEA55ee2
             request.session['user_email'] = member.email
             request.session['user_name'] = member.name
-            # request.session['user_account'] = k[2:]
             request.session['user_account'] = '' + member.account
-            # request.session['user_account1'] = k
-            # return HttpResponse(member)
 
             url = 'http://localhost:8000/unid/mywallet'
             return HttpResponseRedirect(url)
@@ -127,11 +123,11 @@ def oauth(request):
 
         password = request.POST['pwd']  # ★★★★
         account = w3.personal.newAccount(password)
-        # lockpwd = sha256(password)
+        lockpwd = sha256(password)
         br = myPageInfomation(email=request.POST['email'],
                               name=request.POST['name'],
                               joiningdate=timezone.now(),
-                            #   pwd=lockpwd,  # ★★★★
+                              pwd=lockpwd,  # ★★★★
                               account=account)
         br.save()
         url = 'http://localhost:8000/unid'
@@ -149,15 +145,20 @@ def contentsupload(request):
         try:
             now = datetime.now()
             today = now.strftime('%Y-%m-%d')
-            os.mkdir("uploadfiles/" + today) #그 날짜에 맞는 디렉토리 생성
+            os.makedirs("uploadfiles/" + today) #그 날짜에 맞는 디렉토리 생성
             # root_dir = "우리 서버"   # ★★★★★★★★★★★
             # contents_dir = root_dir + "/" + today + "/"
             # contents_dir = today + "/"
         except FileExistsError as e:
             pass
-
+        ftpfilelist = []
+        uifilelist = []
         for upload_file in upload_files:  # 다중 파일 업로드
-            file_name = upload_file.name
+            # file_name = upload_file.name
+            file_name = str(random.random())
+            userfilename = upload_file.name
+            ftpfilelist.append(file_name)
+            uifilelist.append(userfilename)
             now = datetime.now()
             today = now.strftime('%Y-%m-%d')
             contents_dir = "uploadfiles/" + today + "/"
@@ -166,15 +167,13 @@ def contentsupload(request):
                 for chunk in upload_file.chunks():
                     file.write(chunk)
 
-
         # 검수시스템 추후 개발예정
-
-
 
         ftp = FTP()
         ftp.connect("210.107.78.157")    #Ftp 주소 Connect(주소 , 포트)
         ftp.login("unid", "dkagh")
         ftp.cwd("/home/unid/contents")
+        ftp_contents_dir = "/home/unid/contents/" + today + "/"
         try:
             ftp.mkd(today)
         except:
@@ -184,15 +183,20 @@ def contentsupload(request):
         # contents_dir = today + "/"
         # # with open(contents_dir + file_name, "wb") as file:
         # #     ftp.storlines('STOR %s' % file_name, file)
-        for upload_file in upload_files:
-            file_name = upload_file.name
+        filehashdatas = []
+        for file in ftpfilelist:
+            file_name = file
             uploadfile = open(file_name, "rb")
+            filedata = uploadfile.read()
+            hashdata = hashlib.sha256(filedata).hexdigest()
+            filehashdatas.append(hashdata)
             # uploadfile = open("uploadfiles/" + today + "/" + file_name, "rb")
             ftp.storbinary('STOR ' + file_name, uploadfile)
             uploadfile.close()
 
         br = uploadContents(
                         contentspath=contents_dir,
+                        writeremail=request.session['user_email'],
                         filename=file_name,
                         title=request.POST['title'],
                         publisheddate=request.POST['publisheddate'],
@@ -207,9 +211,24 @@ def contentsupload(request):
                         index=request.POST['index'],
                         contents=request.POST['contents'],  # 소개글 제한?
                         reference=request.POST['reference'],
-                        # hash=request.POST['hash'],
-                    )
+        )
         br.save()
+
+        idx = uploadContents.objects.all().order_by('-pk')[0].contents_id     # ★
+
+
+
+        listlength = len(ftpfilelist)
+
+        for i in range(listlength):
+            br = contentsInfo(
+                               contents_id=idx,
+                               uploadfilename=uifilelist[i],
+                               ftpsavefilename=ftpfilelist[i],
+                               contentspath=ftp_contents_dir,
+                               hash=filehashdatas[i],
+                               )
+            br.save()
 
         url = '/unid/contentstran/'
         return HttpResponseRedirect(url)
