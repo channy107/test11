@@ -48,6 +48,14 @@
     margin: 0 0 0 165px;
 
     }
+.user_files {
+    position: relative;
+    left: 690px;
+    top: 35px;
+    opacity: 0;
+    z-index: 1;
+    cursor: pointer;
+    }
 .form-group {
     height: 60px;
     }
@@ -55,6 +63,17 @@
     width: 400px;
     margin: 0 auto;
 } */
+.hi {
+    display: inline;
+}
+.files1 {
+    position: relative;
+    right: 160px;
+}
+.files-button {
+    position: relative;
+    left: 635px;
+}
 .price {
     width: 160px;
     position: relative;
@@ -130,3 +149,4 @@
 .popuprow {
     padding: 30px;
 }
+

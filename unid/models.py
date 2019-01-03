@@ -10,7 +10,7 @@ class myPageInfomation(models.Model):
     profile = models.CharField(max_length=200, blank=True, null=True)
     joiningdate = models.DateTimeField(null=True)
     votingcount = models.IntegerField(blank=True, null=True)
-    pwd = models.CharField(max_length=20, blank=True, null=True)
+    pwd = models.CharField(max_length=200, blank=True, null=True)
     account = models.CharField(max_length=100, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True, editable=False, blank=True, null=True)
     last_modified = models.DateTimeField(auto_now=True, editable=False, blank=True, null=True)
@@ -31,8 +31,6 @@ class wallet(models.Model):
 class uploadContents(models.Model):
     contents_id = models.AutoField(primary_key=True, default=1)
     writeremail = models.CharField(max_length=50)  # 기본키 설정??
-    filename = models.CharField(max_length=100)
-    contentspath = models.CharField(max_length=200)
     title = models.CharField(max_length=50)
     publisheddate = models.DateTimeField()
     category = models.CharField(max_length=50)
@@ -56,6 +54,14 @@ class contentsInfo(models.Model):
     ftpsavefilename = models.CharField(max_length=100)
     contentspath = models.CharField(max_length=200)
     hash = models.CharField(max_length=150, null=True)
+
+class previewInfo(models.Model):
+    IDX = models.AutoField(primary_key=True)
+    contents_id = models.IntegerField()
+    uploadpreviewname = models.CharField(max_length=100)
+    ftpsavepreviewname = models.CharField(max_length=100)
+    imagepath = models.CharField(max_length=200)
+    
 
 class replyForContents(models.Model):
     # IDX = models.AutoField(default=1)
