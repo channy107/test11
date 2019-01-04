@@ -12,6 +12,7 @@ from .views import *
 urlpatterns = [
     path('mywallet/', mywallet,),
     path('', main, name='main'),
+    path('main_upload', main_upload, name='main_upload'),
     path('contentsdetail/<int:id>', contentsdetail, name='contentsdetail'),
     path('contentstran/', contentstran, name='contentstran'),
     path('oauth', views.oauth, name='oauth'),

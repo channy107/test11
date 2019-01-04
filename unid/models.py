@@ -73,37 +73,48 @@ class replyForContents(models.Model):
 
 
 
-class forum(models.Model):
-    contents_id = models.AutoField(primary_key=True, default=1)
-    created = models.DateTimeField(auto_now_add=True, editable=False, blank=True, null=True)
-    last_modified = models.DateTimeField(auto_now=True, editable=False, blank=True, null=True)
-    writer = models.CharField(max_length=50, blank=True, null=True)
-    title = models.CharField(max_length=50, blank=True, null=True)
-    tags = models.CharField(max_length=50, blank=True, null=True)
-    contents = models.CharField(max_length=10000, blank=True, null=True)
+class Post(models.Model):
+    user = models.ForeignKey(myPageInfomation, on_delete=models.CASCADE)
+    file = models.FileField(max_length=1000, null=True)
+    title = models.CharField(max_length=100)
+    contents = models.CharField(max_length=1000, help_text="내용을 작성해주세요")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    category = models.CharField(max_length=50)
+    tags = models.CharField(max_length=100, null=True)
+    like_user_set = models.ManyToManyField(myPageInfomation, blank=True, related_name='like_user_set', through='Like')
 
+    class Meta:
+        ordering = ['-created_at']
 
-class imagesForForum(models.Model):
-    # IDX = models.AutoField(default=1)
-    contents_id = models.ForeignKey(forum, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True, editable=False, blank=True, null=True)
-    last_modified = models.DateTimeField(auto_now=True, editable=False, blank=True, null=True)
-    path = models.CharField(max_length=200, blank=True, null=True)
-    filename = models.CharField(max_length=200, blank=True, null=True)
+    @property
+    def like_count(self):
+        return self.like_user_set.count()
 
+    def __str__(self):
+        return self.contents
 
-class replyForForum(models.Model):
-    # IDX = models.AutoField(default=1)
-    contents_id = models.ForeignKey(forum, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True, editable=False, blank=True, null=True)
-    last_modified = models.DateTimeField(auto_now=True, editable=False, blank=True, null=True)
-    writer = models.CharField(max_length=50, blank=True, null=True)
-    contents = models.CharField(max_length=1000, blank=True, null=True)
+class Like(models.Model):
+    user = models.ForeignKey(myPageInfomation, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        unique_together = (
+            ('user', 'post')
+        )
 
-class voters(models.Model):
-    # IDX = models.AutoField(default=1)
-    contents_id = models.ForeignKey(forum, on_delete=models.CASCADE)
-    created = models.DateTimeField(auto_now_add=True, editable=False, blank=True, null=True)
-    last_modified = models.DateTimeField(auto_now=True, editable=False, blank=True, null=True)
-    list_of_voters = models.CharField(max_length=50, blank=True, null=True)
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    user = models.ForeignKey(myPageInfomation, on_delete=models.CASCADE)
+    contents = models.CharField(max_length=50)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-id']
+
+    def __str__(self):
+        return self.contents
+

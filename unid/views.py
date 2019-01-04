@@ -14,13 +14,15 @@ import requests
 import json
 from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
-from unid.models import myPageInfomation, contentsInfo, uploadContents, uploadContents, previewInfo
+from .models import *
 from web3.auto import w3
 import random
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from allauth.socialaccount.models import SocialAccount
 import hashlib
+
+
 
 def mypage(request):
     # mypage = MypageInfomation.objects.get(email)
@@ -55,7 +57,30 @@ def contentstran(request):
     return render(request, 'unid/contentstran.html', {})
 
 def main(request):
-    return render(request, 'unid/main.html', {})
+    post = Post.objects.all()
+    context = {'post': post}
+    return render(request, 'unid/main.html', context)
+
+def main_upload(request):
+    if request.method == 'GET':
+        return render(request, 'unid/main_upload.html', {})
+    else:
+        sess = request.session['user_email']
+        title = request.POST['title']
+        category = request.POST['category']
+        contents = request.POST['contents']
+        upload_file = request.FILES['user_files']
+        with open("unid/static/unid/img"+'/'+upload_file.name, 'wb') as file:
+            for chunk in upload_file.chunks():
+                file.write(chunk)
+
+        user = myPageInfomation.objects.get(email=sess)
+
+        info = Post(user=user, title=title, category=category, contents=contents, file=upload_file.name)
+        info.save()
+
+        url = '../unid/'
+        return HttpResponseRedirect(url)
 
 def login(request):
     return render(request, 'unid/login.html', {})
