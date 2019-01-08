@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <head>
-    <link href="{% static 'unid/css/index.css' %}" rel="stylesheet">
+    <link href="{% static 'unid/css/contentstran.css' %}" rel="stylesheet">
 </head>
 
 <!-- Page Content -->
@@ -17,13 +17,13 @@
             </ol>
             <div class="carousel-inner" role="listbox">
                 <div class="carousel-item active">
-                    <img class="d-block img-fluid" src="http://placehold.it/1400x250" alt="First slide">
+                    <img class="d-block img-fluid" src="http://placehold.it/1500x250" alt="First slide">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block img-fluid" src="http://placehold.it/1400x250" alt="Second slide">
+                    <img class="d-block img-fluid" src="http://placehold.it/1500x250" alt="Second slide">
                 </div>
                 <div class="carousel-item">
-                    <img class="d-block img-fluid" src="http://placehold.it/1400x250" alt="Third slide">
+                    <img class="d-block img-fluid" src="http://placehold.it/1500x250" alt="Third slide">
                 </div>
             </div>
         </div>
@@ -31,69 +31,98 @@
 
     <div class="contents-tag-row">
         <div class="row">
-            <div class="contents-icon-tags">
+            <div class="contents-icon-tags1">
                 <div class="contents-icon-tag">
-                    <a target="_blank" href="http://localhost:8000/unid/searchcontents">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
+                    <a href="http://localhost:8000/unid/searchcontents/리포트">
+                        <img src="{% static 'unid/icon/report.png' %}" border="0" width="110" height="110">
                     </a>
                     <div class="desc">
-                        <a target="_blank" href="http://localhost:8000/unid/searchcontents">
+                        <a href="http://localhost:8000/unid/searchcontents/리포트" class="categoryname">
+                            # 레포트
+                        </a>
+                    </div>
+                </div>
+                <div class="contents-icon-tag">
+                    <a href="http://localhost:8000/unid/searchcontents/강의자료">
+                        <img src="{% static 'unid/icon/lecture document.png' %}" border="0" width="110" height="110">
+                    </a>
+                    <div class="desc">
+                        <a href="http://localhost:8000/unid/searchcontents/강의자료" class="categoryname">
+                            # 강의자료
+                        </a>
+                    </div>
+                </div>
+                <div class="contents-icon-tag">
+                    <a href="http://localhost:8000/unid/searchcontents/강의노트">
+                        <img src="{% static 'unid/icon/lecture note.png' %}" border="0" width="110" height="110">
+                    </a>
+                    <div class="desc">
+                        <a href="http://localhost:8000/unid/searchcontents/강의노트" class="categoryname">
+                            # 강의노트
+                        </a>
+                    </div>
+                </div>
+                <div class="contents-icon-tag">
+                    <a href="http://localhost:8000/unid/searchcontents/시험자료">
+                        <img src="{% static 'unid/icon/exam.png' %}" border="0" width="110" height="110">
+                    </a>
+                    <div class="desc">
+                        <a href="http://localhost:8000/unid/searchcontents/시험자료" class="categoryname">
+                            # 시험자료
+                        </a>
+                    </div>
+                </div>
+                <div class="contents-icon-tag">
+                    <a href="http://localhost:8000/unid/searchcontents/동영상">
+                        <img src="{% static 'unid/icon/video.png' %}" border="0" width="110" height="110">
+                    </a>
+                    <div class="desc">
+                        <a href="http://localhost:8000/unid/searchcontents/동영상" class="categoryname">
+                            # 동영상
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="contents-icon-tags2">
+                <div class="contents-icon-tag">
+                    <a href="http://localhost:8000/unid/searchcontents/자소서">
+                        <img src="{% static 'unid/icon/resume.png' %}" border="0" width="110" height="110">
+                    </a>
+                    <div class="desc">
+                        <a href="http://localhost:8000/unid/searchcontents/자소서" class="categoryname">
                             # 자소서
                         </a>
                     </div>
                 </div>
                 <div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
+                    <a href="http://localhost:8000/unid/searchcontents/이력서">
+                        <img src="{% static 'unid/icon/profile.png' %}" border="0" width="110" height="110">
                     </a>
-                    <div class="desc"># 자소서</div>
+                    <div class="desc">
+                        <a href="http://localhost:8000/unid/searchcontents/이력서" class="categoryname">
+                            # 이력서
+                        </a>
+                    </div>
                 </div>
                 <div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
+                    <a href="http://localhost:8000/unid/searchcontents/PPT">
+                        <img src="{% static 'unid/icon/ppt.png' %}" border="0" width="110" height="110">
                     </a>
-                    <div class="desc"># 자소서</div>
+                    <div class="desc">
+                        <a href="http://localhost:8000/unid/searchcontents/PPT" class="categoryname">
+                            # PPT
+                        </a>
+                    </div>
                 </div>
                 <div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
+                    <a href="http://localhost:8000/unid/searchcontents/논문">
+                        <img src="{% static 'unid/icon/thesis.png' %}" border="0" width="110" height="110">
                     </a>
-                    <div class="desc"># 자소서</div>
-                </div>
-                <div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
-                    </a>
-                    <div class="desc"># 자소서</div>
-                </div>
-                <div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
-                    </a>
-                    <div class="desc"># 자소서</div>
-                </div>
-                <div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
-                    </a>
-                    <div class="desc"># 자소서</div>
-                </div>
-                <div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
-                    </a>
-                    <div class="desc"># 자소서</div>
-                </div>
-                <div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
-                    </a>
-                    <div class="desc"># 자소서</div>
-                </div><div class="contents-icon-tag">
-                    <a target="_blank" href="fjords.jpg">
-                        <img src="{% static 'unid/icon/report-icon.png' %}" border="0" width="90" height="90">
-                    </a>
-                    <div class="desc"># 자소서</div>
+                    <div class="desc">
+                        <a href="http://localhost:8000/unid/searchcontents/논문" class="categoryname">
+                            # 논문
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

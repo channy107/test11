@@ -41,8 +41,9 @@
                 <div class="col-md-5">
 
                     <div class="detail-content">
-                        <h3><a href="{% url 'contentsdetail' contents.contents_id %}">{{ contents.title }}</h3>
-                        <p><a href="{% url 'contentsdetail' contents.contents_id %}">{{ contents.intro }}z</p></div>
+                        <h3><a href="{% url 'contentsdetail' contents.contents_id %}"/>{{ contents.title }}</h3>
+                        <p><a href="{% url 'contentsdetail' contents.contents_id %}"/>{{ contents.intro }}</p>
+                    </div>
                             <!--<a class="btn btn-primary" href="#">View Project</a>-->
                     <div>
                         <span class="main-voting"><img src="{% static 'unid/icon/dollar.png' %}" border="0" width="18" height="18"></span>3.29

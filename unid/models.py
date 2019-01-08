@@ -29,7 +29,7 @@ class wallet(models.Model):
 
 
 class uploadContents(models.Model):
-    contents_id = models.AutoField(primary_key=True, default=1)
+    contents_id = models.AutoField(primary_key=True)
     writeremail = models.CharField(max_length=50)  # 기본키 설정??
     title = models.CharField(max_length=50)
     publisheddate = models.DateTimeField()
@@ -46,6 +46,7 @@ class uploadContents(models.Model):
     reference = models.CharField(max_length=1000, default=True)
     created = models.DateTimeField(auto_now_add=True, editable=False, null=True, blank=False)
     last_modified = models.DateTimeField(auto_now=True, editable=False, null=True, blank=False)
+    # downloadcount = models.IntegerField()
 
 class contentsInfo(models.Model):
     IDX = models.AutoField(primary_key=True)
@@ -63,13 +64,13 @@ class previewInfo(models.Model):
     imagepath = models.CharField(max_length=200)
     
 
-class replyForContents(models.Model):
-    # IDX = models.AutoField(default=1)
-    writeremail = models.ForeignKey(uploadContents, on_delete=models.CASCADE)
+class replysForContents(models.Model):
+    IDX = models.AutoField(primary_key=True)
+    contents_id = models.IntegerField()
+    writeremail = models.CharField(max_length=50)
     created = models.DateTimeField(auto_now_add=True, editable=False, null=False, blank=False)
     last_modified = models.DateTimeField(auto_now=True, editable=False, null=False, blank=False)
-    writer = models.CharField(max_length=50, blank=True, null=True)
-    contents = models.CharField(max_length=1000, blank=True, null=True)
+    replytext = models.CharField(max_length=1000, blank=True, null=True)
 
 
 

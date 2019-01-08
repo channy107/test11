@@ -24,5 +24,8 @@ urlpatterns = [
     path('contentsupload/', views.contentsupload, name='contentsupload'),
     path('mypage/', views.mypage, name='mypage'),
     path('contentsboard/', contentsboard,   name='contentsboard'),
-    path('searchcontents/', views.searchcontents, name='searchcontents'),
+    path('searchcontents/<str:category>', views.searchcontents, name='searchcontents'),
+    path('moneytrade/', views.moneytrade, name='moneytrade'),
+    path('download/', views.download, name='download'),
+    path('writereply/', views.writereply, name='writereply'),
 ]

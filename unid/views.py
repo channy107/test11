@@ -1,65 +1,71 @@
 import os
 from _sha256 import sha256
 from datetime import datetime
-# from django.contrib.sessions.models import Session
-import allauth.socialaccount.providers.google
 from ftplib import FTP
-# from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from django.contrib.auth.models import User
 from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.datastructures import MultiValueDictKeyError
+from django.views.decorators.http import require_POST
 from web3 import Web3, HTTPProvider
 from django.shortcuts import render
 import requests
 import json
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.utils import timezone
 from .models import *
-from web3.auto import w3
 import random
-from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from allauth.socialaccount.models import SocialAccount
 import hashlib
-
 
 
 def mypage(request):
     # mypage = MypageInfomation.objects.get(email)
     contentsboard = uploadContents.objects.all()
-    context = {'mypage':mypage,
-               'contentsboard':contentsboard}
+    context = {'mypage': mypage,
+               'contentsboard': contentsboard}
     return render(request, 'unid/mypage.html', context)
+
 
 def contentsboard(request):
     contentsboard = uploadContents.objects.all()
-    context = {'contentsboard':contentsboard}
+    context = {'contentsboard': contentsboard}
     return render(request, 'unid/contentsboard.html', context)
+
 
 def mywallet(request):
     return render(request, 'unid/mywallet.html', {})
 
+
 def transaction(request):
     return render(request, 'unid/transaction.html', {})
 
+
 def contentsdetail(request, id):
     contents = uploadContents.objects.get(contents_id=id)
+    replys = replysForContents.objects.filter(contents_id=id).values()
+
+    # date = contents.created
+    # print(date[0:4])
+
     # preview = previewInfo.objects.get(contents_id=id)
     # return HttpResponse(contents.title)
     return render(
-        request, 'unid/contentsdetail.html', 
-        {'contents': contents}
-            # , 'preview': preview}
+        request,
+        'unid/contentsdetail.html',
+        {'contents': contents, 'replys': replys}
+        # , 'preview': preview}
     )
-    
+
 
 def contentstran(request):
     return render(request, 'unid/contentstran.html', {})
+
 
 def main(request):
     post = Post.objects.all()
     context = {'post': post}
     return render(request, 'unid/main.html', context)
+
 
 def main_upload(request):
     if request.method == 'GET':
@@ -70,7 +76,7 @@ def main_upload(request):
         category = request.POST['category']
         contents = request.POST['contents']
         upload_file = request.FILES['user_files']
-        with open("unid/static/unid/img"+'/'+upload_file.name, 'wb') as file:
+        with open("unid/static/unid/img" + '/' + upload_file.name, 'wb') as file:
             for chunk in upload_file.chunks():
                 file.write(chunk)
 
@@ -82,11 +88,14 @@ def main_upload(request):
         url = '../unid/'
         return HttpResponseRedirect(url)
 
+
 def login(request):
     return render(request, 'unid/login.html', {})
 
+
 def signup(request):
     return render(request, 'unid/signup.html', {})
+
 
 def createaccount(request):
     if request.method == 'GET':
@@ -132,7 +141,7 @@ def oauth(request):
         id = json.loads(((response.text).encode('utf-8')))['id']
         nickname = json.loads(((response.text).encode('utf-8')))['properties']['nickname']
         try:
-             member = myPageInfomation.objects.get(email=id)
+            member = myPageInfomation.objects.get(email=id)
         except myPageInfomation.DoesNotExist:
             return render(
                 request,
@@ -142,7 +151,7 @@ def oauth(request):
         else:
             request.session['user_email'] = member.email
             request.session['user_name'] = member.name
-            request.session['user_account'] = '' + member.account
+            request.session['user_account'] = member.account
 
             url = 'http://localhost:8000/unid/mywallet'
             return HttpResponseRedirect(url)
@@ -177,13 +186,13 @@ def contentsupload(request):
         try:
             now = datetime.now()
             today = now.strftime('%Y-%m-%d')
-            os.mkdir("uploadfiles/" + today) #그 날짜에 맞는 디렉토리 생성
+            os.mkdir("uploadfiles/" + today)  # 그 날짜에 맞는 디렉토리 생성
             # root_dir = "우리 서버"   # ★★★★★★★★★★★
             # contents_dir = root_dir + "/" + today + "/"
             # contents_dir = today + "/"
         except FileExistsError as e:
             pass
-        
+
         ftpfilelist = []
         uifilelist = []
         for upload_file in upload_files:  # 다중 파일 업로드
@@ -197,7 +206,7 @@ def contentsupload(request):
             now = datetime.now()
             today = now.strftime('%Y-%m-%d')
             contents_dir = "uploadfiles/" + today + "/"
-                      #해당 날짜의 디렉토리
+            # 해당 날짜의 디렉토리
             with open(contents_dir + real_filename, 'wb') as file:  # 저장경로
                 for chunk in upload_file.chunks():
                     file.write(chunk)
@@ -214,7 +223,7 @@ def contentsupload(request):
             now = datetime.now()
             today = now.strftime('%Y-%m-%d')
             contents_dir = "uploadfiles/" + today + "/"
-                      #해당 날짜의 디렉토리
+            # 해당 날짜의 디렉토리
             with open(contents_dir + real_preview_filename, 'wb') as file:  # 저장경로
                 for chunk in upload_image.chunks():
                     file.write(chunk)
@@ -222,7 +231,7 @@ def contentsupload(request):
         # 검수시스템 추후 개발예정
         # session = ftplib.FTP('210.107.78.157')
         ftp = FTP()
-        ftp.connect("210.107.78.157")    #Ftp 주소 Connect(주소 , 포트)
+        ftp.connect("210.107.78.157")  # Ftp 주소 Connect(주소 , 포트)
         ftp.login("unid", "dkagh")
         ftp.cwd("/home/unid/contents")
         ftp_contents_dir = "/home/unid/contents/" + today + "/"
@@ -246,8 +255,7 @@ def contentsupload(request):
             filehashdatas.append(hashdata)
             uploadfile.close()
 
-
-        # Uploading preview file in preview folder    
+        # Uploading preview file in preview folder
         ftp.cwd("/home/unid/images/contents")
         ftp_preview_images_dir = "/home/unid/images/contents/" + today + "/"
         try:
@@ -260,45 +268,46 @@ def contentsupload(request):
             uploadfile = open(file_name, "rb")
             ftp.storbinary('STOR ' + file_name, uploadfile)
             uploadfile.close()
-
+        os.chdir("..")
+        os.chdir("..")
         br = uploadContents(
-                        writeremail=request.session['user_email'],
-                        title=request.POST['title'],
-                        publisheddate=request.POST['publisheddate'],
-                        category=request.POST['category'],
-                        price=request.POST['price'],
-                        tags=request.POST['tags'],
-                        fileinfo=request.POST['fileinfo'],
-                        totalpages=request.POST['totalpages'],
-                        # previewpath=request.POST['previewpath'],
-                        authorinfo=request.POST['authorinfo'],
-                        intro=request.POST['intro'],
-                        index=request.POST['index'],
-                        contents=request.POST['contents'],  # 소개글 제한?
-                        reference=request.POST['reference'],
+            writeremail=request.session['user_email'],
+            title=request.POST['title'],
+            publisheddate=request.POST['publisheddate'],
+            category=request.POST['category'],
+            price=request.POST['price'],
+            tags=request.POST['tags'],
+            fileinfo=request.POST['fileinfo'],
+            totalpages=request.POST['totalpages'],
+            # previewpath=request.POST['previewpath'],
+            authorinfo=request.POST['authorinfo'],
+            intro=request.POST['intro'],
+            index=request.POST['index'],
+            contents=request.POST['contents'],  # 소개글 제한?
+            reference=request.POST['reference'],
         )
         br.save()
 
-        idx = uploadContents.objects.all().order_by('-pk')[0].contents_id     # ★
+        idx = uploadContents.objects.all().order_by('-pk')[0].contents_id  # ★
         filelistlength = len(ftpfilelist)
         for i in range(filelistlength):
             br = contentsInfo(
-                               contents_id=idx,
-                               uploadfilename=uifilelist[i],
-                               ftpsavefilename=ftpfilelist[i],
-                               contentspath=ftp_contents_dir,
-                               hash=filehashdatas[i],
-                               )
+                contents_id=idx,
+                uploadfilename=uifilelist[i],
+                ftpsavefilename=ftpfilelist[i],
+                contentspath=ftp_contents_dir,
+                hash=filehashdatas[i],
+            )
             br.save()
 
         previewlistlength = len(preview_ftp_filelist)
         for i in range(previewlistlength):
             br = previewInfo(
-                               contents_id=idx,
-                               uploadpreviewname=preview_ui_filelist[i],
-                               ftpsavepreviewname=preview_ftp_filelist[i],
-                               imagepath=ftp_preview_images_dir,
-                               )
+                contents_id=idx,
+                uploadpreviewname=preview_ui_filelist[i],
+                ftpsavepreviewname=preview_ftp_filelist[i],
+                imagepath=ftp_preview_images_dir,
+            )
             br.save()
 
         # rpc_url = "http://localhost:8545"
@@ -306,7 +315,7 @@ def contentsupload(request):
 
         # contentsMasterContract_address = Web3.toChecksumAddress("0xa083498c49c29719887b040f003a714684ec4f4c")
         # cmc = w3.eth.contract(address = contentsMasterContract_address, abi = [{"constant":False,"inputs":[{"name":"name","type":"string"},{"name":"price","type":"uint32"},{"name":"hash","type":"string"}],"name":"addContents","outputs":[],"payable":False,"stateMutability":"nonpayable","type":"function"},{"constant":True,"inputs":[{"name":"","type":"address"}],"name":"contents","outputs":[{"name":"","type":"address"}],"payable":False,"stateMutability":"view","type":"function"},{"constant":True,"inputs":[],"name":"getContentsAddressList","outputs":[{"name":"contentsAddressList","type":"address[]"}],"payable":False,"stateMutability":"view","type":"function"},{"anonymous":False,"inputs":[{"indexed":False,"name":"name","type":"string"}],"name":"EventAddContents","type":"event"}])
-        
+
         # w3.personal.unlockAccount(w3.eth.accounts[0], "pass0", 0)
         # price = int(request.POST['price'])
         # for i in range(len(filehashdatas)):
@@ -317,16 +326,56 @@ def contentsupload(request):
         return HttpResponseRedirect(url)
 
 
+@require_POST
+def moneytrade(request):
+    rpc_url = "http://localhost:8545"
+    w3 = Web3(HTTPProvider(rpc_url))
+    writeremail = request.POST['writeremail']
+    sellerinfo = myPageInfomation.objects.get(email=writeremail)
+    # price = uploadContents.objects.get(contents_id=request.POST['id'])
+    selleraccount = Web3.toChecksumAddress(sellerinfo.account)
+    buyeraccount = Web3.toChecksumAddress(request.session['user_account'])
+    buyerpwd = request.POST['pwd']
+    print(buyerpwd)
+    print(selleraccount)
+    print(buyeraccount)
+    w3.personal.unlockAccount(buyeraccount, buyerpwd, 0)
+    w3.eth.sendTransaction({
+        'from': buyeraccount,
+        'to': selleraccount,
+        'value': w3.toWei(5, "ether")
+    })
+
+    res = {'Ans': '결제되었습니다.'}
+    return JsonResponse(res)
+    # 거래 내역 디비에 담기
 
 
+@require_POST
+def download(request):
+    id = request.POST['id']
+    contentsinfos = contentsInfo.objects.filter(contents_id=id).values()
+    fileplace = contentsinfos[0]['contentspath']
+    print(contentsinfos)
+    print(fileplace)
+    ftp = FTP()
+    ftp.connect("210.107.78.157")
+    ftp.login("unid", "dkagh")
+    ftp.cwd(fileplace)
+    for i in range(len(contentsinfos)):
+        filename = contentsinfos[i]['ftpsavefilename']
+        fd = open(filename, 'wb')  # 다운로드 위치 ..
+        ftp.retrbinary("RETR " + filename, fd.write)
+    # 파일 이름 바꾸기...
+    fd.close()
+    # board = uploadContents.objects.get(contents_id=id)
+    # board.downloadcount = board.downloadcount + 1
+    # board.save()
+
+    res = {'Ans': '다운로드 되었습니다.'}
+    return JsonResponse(res)
 
 
-
-
-
-
-# def download(request, id):
-#     postnumber = uploadContents.objects.get(contents_id = )
 #      filepath = os.path.join(settings.BASE_DIR, 'In/11_06_맛있는부산_데이터.db')
 #      filename = os.path.basename(filepath)
 #      with open(filepath, 'rb') as f:
@@ -334,18 +383,32 @@ def contentsupload(request):
 #          response['Content-Disposition'] = 'attachment; filename="{}"'.format(filename)
 #          return response
 
-def postview(request, id): # GET 방식으로 입력박을 시 넘어오는 id. urls.py 에서도 path에 입력해줘야함.
-    board = uploadContents.objects.get(contents_id=id)     # id에 해당하는 정보들
+
+def writereply(request):
+    br = replysForContents(contents_id=request.POST['id'],
+                           writeremail=request.session['user_email'],
+                           replytext=request.POST['reply']
+                           )
+
+    br.save()
+
+    res = {"Ans": "댓글 작성이 완료되었습니다."}
+    return JsonResponse(res)
+
+
+def postview(request, id):  # GET 방식으로 입력박을 시 넘어오는 id. urls.py 에서도 path에 입력해줘야함.
+    board = uploadContents.objects.get(contents_id=id)  # id에 해당하는 정보들
     # board.hits = board.hits + 1    # 조회수 증가
     # board.save()
-                                                        # id 에 해당하는 정보들을 html에 넘겨줘서 사용
-                                                        # viewwork.html 에서 {{ board.memo }} 로 내용물 확인 가능
+    # id 에 해당하는 정보들을 html에 넘겨줘서 사용
+    # viewwork.html 에서 {{ board.memo }} 로 내용물 확인 가능
     return render(request, 'unid/contentsdetail.html', {'board': board})
 
-def searchcontents(request):
-    contentslists = uploadContents.objects.order_by('-contents_id')
+
+def searchcontents(request, category):
+    allcontentslists = uploadContents.objects.order_by('-contents_id').filter(category=category)
     # return HttpResponse(contentslists)
     return render(
-        request, 'unid/searchcontents.html', 
-        {'contentslists': contentslists}
+        request, 'unid/searchcontents.html',
+        {'contentslists': allcontentslists}
     )
