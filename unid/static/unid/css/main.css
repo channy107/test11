@@ -26,6 +26,7 @@ a {
     padding: 30px;
     margin-top: 40px;
     margin-right: 10px;
+    height : max-content;
 }
 
 .mainContent {
@@ -85,3 +86,25 @@ p {
 .main-voting {
     margin-right:5px;
 }
+
+button.votings {
+    background-color : white;
+    border: none;
+    cursor : pointer;
+}
+
+.scroll {
+    margin:10px;
+    text-align: center;
+}
+
+#callmorepost {
+    background-color : white;
+    border: none;
+    cursor : pointer;
+}
+
+.rewards {
+    margin:5px;
+}
+
